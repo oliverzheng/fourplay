@@ -1,0 +1,10 @@
+PODS:
+  - VDKQueue (0.1.0)
+
+DEPENDENCIES:
+  - VDKQueue (~> 0.1.0)
+
+SPEC CHECKSUMS:
+  VDKQueue: d2a925cbbeaae8de09af221e60c1f03256ba4e89
+
+COCOAPODS: 0.39.0

@@ -2,7 +2,28 @@
 
 @import AppKit;
 
-@implementation FourPlayNativeModule
+#import <VDKQueue/VDKQueue.h>
+
+#import "RCTBridge.h"
+#import "RCTEventDispatcher.h"
+
+@interface FourPlayNativeModule() <VDKQueueDelegate>
+@end
+
+@implementation FourPlayNativeModule {
+  VDKQueue *_vdkQueue;
+}
+
+@synthesize bridge = _bridge;
+
+-(VDKQueue *)vdkQueue
+{
+  if (!_vdkQueue) {
+    _vdkQueue = [[VDKQueue alloc] init];
+    _vdkQueue.delegate = self;
+  }
+  return _vdkQueue;
+}
 
 RCT_EXPORT_MODULE();
 
@@ -25,5 +46,27 @@ RCT_EXPORT_METHOD(openFilePicker:(NSDictionary *)params
     callback(@[urls]);
   });
 }
+
+RCT_EXPORT_METHOD(watchFile:(NSString *)filepath)
+{
+  [self.vdkQueue addPath:filepath];
+}
+
+RCT_EXPORT_METHOD(unwatchFile:(NSString *)filepath)
+{
+  [self.vdkQueue removePath:filepath];
+}
+
+#pragma mark - VDKQueueDelegate
+
+-(void)VDKQueue:(VDKQueue *)queue receivedNotification:(NSString*)noteName forPath:(NSString*)fpath
+{
+  NSDictionary *event = @{
+    @"noteName": noteName,
+    @"path": fpath,
+  };
+  [self.bridge.eventDispatcher sendAppEventWithName:@"FourPlayFileChange" body:event];
+}
+
 
 @end

@@ -2,7 +2,10 @@
  * Sample React Native Desktop App
  * https://github.com/ptmt/react-native-desktop
  */
+import RCTNativeAppEventEmitter from 'RCTNativeAppEventEmitter';
 import React from 'react-native-desktop';
+import Subscribable from 'Subscribable';
+
 const {
   AppRegistry,
   NativeModules,
@@ -15,6 +18,18 @@ const {
 const {FourPlayNativeModule} = NativeModules;
 
 const fourplay = React.createClass({
+  mixins: [
+    Subscribable.Mixin,
+  ],
+
+  componentWillMount() {
+    this.addListenerOn(
+      RCTNativeAppEventEmitter,
+      'FourPlayFileChange',
+      this._onFileChange,
+    );
+  },
+
   render() {
     return (
       <View style={styles.container}>
@@ -44,8 +59,15 @@ const fourplay = React.createClass({
       },
       filenames => {
         console.log(filenames);
+        filenames.forEach(
+          filename => FourPlayNativeModule.watchFile(filename)
+        );
       },
     );
+  },
+
+  _onFileChange(): void {
+    console.log('!!!', arguments);
   },
 });
 
