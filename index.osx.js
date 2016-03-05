@@ -2,13 +2,17 @@
  * Sample React Native Desktop App
  * https://github.com/ptmt/react-native-desktop
  */
- import React from 'react-native-desktop';
- const {
-   AppRegistry,
-   StyleSheet,
-   Text,
-   View,
- } = React;
+import React from 'react-native-desktop';
+const {
+  AppRegistry,
+  NativeModules,
+  StyleSheet,
+  Text,
+  TouchableHighlight,
+  View,
+} = React;
+
+const {FourPlayNativeModule} = NativeModules;
 
 const fourplay = React.createClass({
   render() {
@@ -24,9 +28,25 @@ const fourplay = React.createClass({
           Press Cmd+R to reload,{'\n'}
           Or use Developer Menu
         </Text>
+        <TouchableHighlight
+          onPress={this._openFilePicker}>
+          <Text>Open file picker</Text>
+        </TouchableHighlight>
       </View>
     );
-  }
+  },
+
+  _openFilePicker(): void {
+    FourPlayNativeModule.openFilePicker(
+      {
+        chooseDirectories: false,
+        allowMultiple: true,
+      },
+      filenames => {
+        console.log(filenames);
+      },
+    );
+  },
 });
 
 const styles = StyleSheet.create({
