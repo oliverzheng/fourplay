@@ -1,14 +1,9 @@
 [ignore]
 
-.*/*.json
-
 # We fork some components by platform.
 .*/*.web.js
 .*/*.android.js
 .*/*.ios.js
-
-# Shit is all messed up.
-.*/node_modules/react-native-desktop/*
 
 # Some modules have their own node_modules with overlap
 .*/node_modules/node-haste/.*
@@ -81,4 +76,4 @@ suppress_comment=\\(.\\|\n\\)*\\$FlowIssue\\((\\(>=0\\.\\(2[0-0]\\|1[0-9]\\|[0-9
 suppress_comment=\\(.\\|\n\\)*\\$FlowFixedInNextDeploy
 
 [version]
-0.22
+0.21.0
