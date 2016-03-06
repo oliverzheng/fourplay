@@ -1,17 +1,17 @@
 /* @flow */
 
-import React from 'react-native-desktop';
-
-const {
+import React, {
   PropTypes,
   Text,
   View,
-} = React;
+} from 'react-native-desktop';
+
+import {FilePathPropType} from './FilePath';
 
 export default React.createClass({
   propTypes: {
     homeDirectory: PropTypes.string.isRequired,
-    paths: PropTypes.array.isRequired,
+    paths: PropTypes.arrayOf(FilePathPropType).isRequired,
   },
 
   render() {
