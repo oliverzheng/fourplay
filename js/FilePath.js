@@ -3,12 +3,12 @@
 import {PropTypes} from 'react-native-desktop';
 
 export type FilePath = {
-  filepath: string;
+  path: string;
   isDir: boolean;
 };
 
 export const FilePathPropType = PropTypes.shape({
-  filepath: PropTypes.string.isRequired,
+  path: PropTypes.string.isRequired,
   isDir: PropTypes.bool.isRequired,
 });
 

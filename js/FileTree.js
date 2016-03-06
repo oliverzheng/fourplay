@@ -11,17 +11,17 @@ import {FilePathPropType} from './FilePath';
 export default React.createClass({
   propTypes: {
     homeDirectory: PropTypes.string.isRequired,
-    paths: PropTypes.arrayOf(FilePathPropType).isRequired,
+    filepaths: PropTypes.arrayOf(FilePathPropType).isRequired,
   },
 
   render() {
-    const derp = this.props.paths.map(path => {
+    const derp = this.props.filepaths.map(filepath => {
       return (
-        <View key={path.filepath}>
+        <View key={filepath.path}>
           <Text>
-            {path.isDir ? '(D)' : '(F)'}
+            {filepath.isDir ? '(D)' : '(F)'}
             {' '}
-            {path.filepath}
+            {filepath.path}
           </Text>
         </View>
       );

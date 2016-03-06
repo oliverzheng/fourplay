@@ -56,23 +56,23 @@ RCT_EXPORT_METHOD(subpathsInDirectory:(NSString *)dirPath
                                      includingPropertiesForKeys:@[NSURLPathKey, NSURLIsDirectoryKey]
                                                         options:0
                                                    errorHandler:nil];
-  NSMutableArray *paths = [NSMutableArray array];
+  NSMutableArray *filepaths = [NSMutableArray array];
 
   for (NSURL *url in dirEnum) {
-    NSString *filepath;
-    [url getResourceValue:&filepath forKey:NSURLPathKey error:NULL];
+    NSString *path;
+    [url getResourceValue:&path forKey:NSURLPathKey error:NULL];
 
     NSNumber *isDirValue;
     [url getResourceValue:&isDirValue forKey:NSURLIsDirectoryKey error:NULL];
 
     NSDictionary *fileObj = @{
       @"isDir": @([isDirValue boolValue]),
-      @"filepath": filepath,
+      @"path": path,
     };
-    [paths addObject:fileObj];
+    [filepaths addObject:fileObj];
   }
 
-  callback(@[paths]);
+  callback(@[filepaths]);
 }
 
 RCT_EXPORT_METHOD(watchFile:(NSString *)filepath)

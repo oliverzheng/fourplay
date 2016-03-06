@@ -21,17 +21,17 @@ export default React.createClass({
 
   getInitialState() {
     return {
-      paths: null,
+      filepaths: null,
     };
   },
 
   render() {
     let fileTree;
-    if (this.state.paths) {
+    if (this.state.filepaths) {
       fileTree = (
         <FileTree
           homeDirectory={this.props.homeDirectory}
-          paths={this.state.paths}
+          filepaths={this.state.filepaths}
         />
       );
     }
@@ -68,8 +68,8 @@ export default React.createClass({
           return;
         }
 
-        FourPlayNativeModule.subpathsInDirectory(directory, paths => {
-          this.setState({paths: paths});
+        FourPlayNativeModule.subpathsInDirectory(directory, filepaths => {
+          this.setState({filepaths});
         });
       },
     );
