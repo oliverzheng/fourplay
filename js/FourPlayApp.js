@@ -1,18 +1,18 @@
 /* @flow */
 
-import React from 'react-native-desktop';
-
-import FileTree from './FileTree';
-
-const {
+import React, {
   PropTypes,
   NativeModules,
   StyleSheet,
   Text,
   TouchableHighlight,
   View,
-} = React;
+} from 'react-native-desktop';
+
 const {FourPlayNativeModule} = NativeModules;
+
+import FileTree from './FileTree';
+import FileFilter from './FileFilter';
 
 export default React.createClass({
   propTypes: {
@@ -32,6 +32,7 @@ export default React.createClass({
         <FileTree
           homeDirectory={this.props.homeDirectory}
           filepaths={this.state.filepaths}
+          fileFilter={FileFilter.getDefault()}
         />
       );
     }
