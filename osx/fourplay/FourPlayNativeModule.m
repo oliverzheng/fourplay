@@ -32,7 +32,7 @@ RCT_EXPORT_METHOD(openFilePicker:(NSDictionary *)params
 {
   dispatch_async(dispatch_get_main_queue(), ^() {
     BOOL chooseDirectories = params[@"chooseDirectories"] == @(YES);
-    
+
     NSOpenPanel *panel = [NSOpenPanel openPanel];
     panel.canChooseFiles = !chooseDirectories;
     panel.canChooseDirectories = chooseDirectories;
@@ -45,6 +45,34 @@ RCT_EXPORT_METHOD(openFilePicker:(NSDictionary *)params
     }
     callback(@[urls]);
   });
+}
+
+RCT_EXPORT_METHOD(subpathsInDirectory:(NSString *)dirPath
+                  callback:(RCTResponseSenderBlock)callback)
+{
+  NSURL *dirURL = [NSURL fileURLWithPath:dirPath isDirectory:YES];
+  NSFileManager *fileManager = [NSFileManager defaultManager];
+  NSDirectoryEnumerator *dirEnum = [fileManager enumeratorAtURL:dirURL
+                                     includingPropertiesForKeys:@[NSURLPathKey, NSURLIsDirectoryKey]
+                                                        options:0
+                                                   errorHandler:nil];
+  NSMutableArray *paths = [NSMutableArray array];
+
+  for (NSURL *url in dirEnum) {
+    NSString *filepath;
+    [url getResourceValue:&filepath forKey:NSURLPathKey error:NULL];
+
+    NSNumber *isDirValue;
+    [url getResourceValue:&isDirValue forKey:NSURLIsDirectoryKey error:NULL];
+
+    NSDictionary *fileObj = @{
+      @"isDir": @([isDirValue boolValue]),
+      @"filepath": filepath,
+    };
+    [paths addObject:fileObj];
+  }
+
+  callback(@[paths]);
 }
 
 RCT_EXPORT_METHOD(watchFile:(NSString *)filepath)

@@ -49,16 +49,17 @@
 - (void)applicationDidFinishLaunching:(__unused NSNotification *)aNotification
 {
 
-    _bridge = [[RCTBridge alloc] initWithDelegate:self
-                                              launchOptions:nil];
+  _bridge = [[RCTBridge alloc] initWithDelegate:self
+                                  launchOptions:nil];
 
-    RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:_bridge
-                                                     moduleName:@"fourplay"
-                                              initialProperties:nil];
+  NSDictionary *initialProps = @{
+    @"homeDirectory": NSHomeDirectory(),
+  };
+  RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:_bridge
+                                                   moduleName:@"fourplay"
+                                            initialProperties:initialProps];
 
-
-
-    [self.window setContentView:rootView];
+  [self.window setContentView:rootView];
 }
 
 

@@ -6,6 +6,6 @@
     "start": "node node_modules/react-native-desktop/local-cli/cli.js start"
   },
   "dependencies": {
-    "react-native-desktop": "^0.3.16"
+    "react-native-desktop": "^0.4.0"
   }
 }

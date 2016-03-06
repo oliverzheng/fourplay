@@ -1,3 +1,5 @@
+/* @flow */
+
 import React from 'react-native-desktop';
 import FourPlayApp from './js/FourPlayApp';
 

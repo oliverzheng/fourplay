@@ -1,31 +1,40 @@
-import RCTNativeAppEventEmitter from 'RCTNativeAppEventEmitter';
+/* @flow */
+
 import React from 'react-native-desktop';
-import Subscribable from 'Subscribable';
+
+import FileTree from './FileTree';
 
 const {
+  PropTypes,
   NativeModules,
   StyleSheet,
   Text,
   TouchableHighlight,
   View,
 } = React;
-
 const {FourPlayNativeModule} = NativeModules;
 
 export default React.createClass({
-  mixins: [
-    Subscribable.Mixin,
-  ],
+  propTypes: {
+    homeDirectory: PropTypes.string.isRequired,
+  },
 
-  componentWillMount() {
-    this.addListenerOn(
-      RCTNativeAppEventEmitter,
-      'FourPlayFileChange',
-      this._onFileChange,
-    );
+  getInitialState() {
+    return {
+      paths: null,
+    };
   },
 
   render() {
+    let fileTree;
+    if (this.state.paths) {
+      fileTree = (
+        <FileTree
+          homeDirectory={this.props.homeDirectory}
+          paths={this.state.paths}
+        />
+      );
+    }
     return (
       <View style={styles.container}>
         <Text style={styles.welcome}>
@@ -42,6 +51,7 @@ export default React.createClass({
           onPress={this._openFilePicker}>
           <Text>Open file picker</Text>
         </TouchableHighlight>
+        {fileTree}
       </View>
     );
   },
@@ -49,20 +59,20 @@ export default React.createClass({
   _openFilePicker(): void {
     FourPlayNativeModule.openFilePicker(
       {
-        chooseDirectories: false,
-        allowMultiple: true,
+        chooseDirectories: true,
+        allowMultiple: false,
       },
-      filenames => {
-        console.log(filenames);
-        filenames.forEach(
-          filename => FourPlayNativeModule.watchFile(filename)
-        );
+      directories => {
+        const directory = directories[0];
+        if (!directory) {
+          return;
+        }
+
+        FourPlayNativeModule.subpathsInDirectory(directory, paths => {
+          this.setState({paths: paths});
+        });
       },
     );
-  },
-
-  _onFileChange(): void {
-    console.log('!!!', arguments);
   },
 });
 
