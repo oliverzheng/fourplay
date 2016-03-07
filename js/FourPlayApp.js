@@ -69,6 +69,7 @@ export default React.createClass({
           return;
         }
 
+        // TODO support multiple directories
         FourPlayNativeModule.subpathsInDirectory(directory, filepaths => {
           this.setState({filepaths});
         });
